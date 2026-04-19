@@ -1,12 +1,51 @@
-# 1. Using single quotes
-print('There’s a lot of it about.')
+import re
 
-# 2. Using double quotes
-print('"Certainly is", she said.')
+def transform_text(text):
+    # Days of the week (always capitalized)
+    days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"]
 
-# 3. Mixing single and double quotes
-print('"She said \'Certainly is\'", Mel reported.')
+    # Lowercase
+    lower = text.lower()
 
-# 4. Using escape characters for backslash
-print('Left\\right')
+    # Uppercase
+    upper = text.upper()
+
+    # Sentence case (first letter uppercase, rest lowercase)
+    sentence = text.capitalize()
+
+    # Title case (capitalize first letter of each word, rest lowercase)
+    title = text.title()
+
+    # Special rule: capitalize days of the week
+    def capitalize_days(s):
+        for day in days:
+            s = re.sub(day, day.capitalize(), s, flags=re.IGNORECASE)
+        return s
+
+    lower = capitalize_days(lower)
+    upper = capitalize_days(upper)
+    sentence = capitalize_days(sentence)
+    title = capitalize_days(title)
+
+    return {
+        "lowercase": lower,
+        "uppercase": upper,
+        "sentence_case": sentence,
+        "title_case": title
+    }
+
+# Example strings
+texts = [
+    "tomorrow is tuesday.",
+    "TOMORROW is tuesday?",
+    "then What? wedNesday?"
+]
+
+for t in texts:
+    print(f"Original: {t}")
+    results = transform_text(t)
+    for k,v in results.items():
+        print(f"{k}: {v}")
+    print()
+
 
